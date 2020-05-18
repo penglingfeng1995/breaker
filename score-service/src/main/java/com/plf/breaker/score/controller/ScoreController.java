@@ -1,6 +1,6 @@
 package com.plf.breaker.score.controller;
 
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.concurrent.TimeUnit;
@@ -11,10 +11,10 @@ import java.util.concurrent.TimeUnit;
 @RestController
 public class ScoreController {
 
-    @PostMapping("addScore")
+    @GetMapping("addScore")
     public String addScore(){
         try {
-            TimeUnit.SECONDS.sleep(3L);
+            TimeUnit.SECONDS.sleep(5L);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
