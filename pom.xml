@@ -10,6 +10,9 @@
     <modules>
         <module>hystrix</module>
         <module>score-service</module>
+        <module>hystrix-javanica</module>
+        <module>hystrix-cloud</module>
+        <module>sentinel</module>
     </modules>
     <packaging>pom</packaging>
 

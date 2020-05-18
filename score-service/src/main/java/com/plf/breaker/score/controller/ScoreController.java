@@ -11,13 +11,22 @@ import java.util.concurrent.TimeUnit;
 @RestController
 public class ScoreController {
 
+    int i = 0;
+
     @GetMapping("addScore")
-    public String addScore(){
+    public String addScore() {
+        i++;
+        if (i % 3 == 0) {
+            sleep(5L);
+        }
+        return "积分增加成功";
+    }
+
+    private void sleep(long timeout) {
         try {
-            TimeUnit.SECONDS.sleep(5L);
+            TimeUnit.SECONDS.sleep(timeout);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return "积分增加成功";
     }
 }
