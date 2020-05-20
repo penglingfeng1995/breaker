@@ -14,6 +14,9 @@ public class RegisterService {
     @Autowired
     private ScoreService scoreService;
 
+    @Autowired
+    private LotteryService lotteryService;
+
     public String register() {
         log.info("注册成功");
         String scoreResult = scoreService.addScore();
@@ -29,4 +32,11 @@ public class RegisterService {
         return "success" + scoreResult;
     }
 
+    public String registerH2() {
+        log.info("注册成功");
+        String scoreResult = scoreService.addScoreH();
+        log.info("赠送积分响应:{}", scoreResult);
+        String drawResult = lotteryService.addDrawTimeH();
+        return "success" + scoreResult + ":" + drawResult;
+    }
 }

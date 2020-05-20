@@ -20,4 +20,9 @@ public class RegisterController {
     public String registerH(){
         return registerService.registerH();
     }
+
+    @PostMapping("registerH2")
+    public String registerH2(){
+        return registerService.registerH2();
+    }
 }
