@@ -39,4 +39,8 @@ public class RegisterService {
         String drawResult = lotteryService.addDrawTimeH();
         return "success" + scoreResult + ":" + drawResult;
     }
+
+    public String decrScore(){
+        return scoreService.decrScore();
+    }
 }

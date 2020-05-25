@@ -25,4 +25,9 @@ public class RegisterController {
     public String registerH2(){
         return registerService.registerH2();
     }
+
+    @PostMapping("decrScore")
+    public String decrScore(){
+        return registerService.decrScore();
+    }
 }
