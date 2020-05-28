@@ -16,9 +16,10 @@ public class ScoreController {
     @GetMapping("addScore")
     public String addScore() {
         i++;
-        if (i % 3 == 0) {
-            sleep(5L);
-        }
+//        if (i % 3 == 0) {
+//            sleep(5L);
+//        }
+//        sleep(5L);
         return "积分增加成功";
     }
 

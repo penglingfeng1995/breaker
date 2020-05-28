@@ -9,17 +9,15 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.concurrent.TimeUnit;
 
-import static com.netflix.hystrix.contrib.javanica.conf.HystrixPropertiesManager.CORE_SIZE;
-import static com.netflix.hystrix.contrib.javanica.conf.HystrixPropertiesManager.EXECUTION_ISOLATION_THREAD_TIMEOUT_IN_MILLISECONDS;
-import static com.netflix.hystrix.contrib.javanica.conf.HystrixPropertiesManager.MAX_QUEUE_SIZE;
+import static com.netflix.hystrix.contrib.javanica.conf.HystrixPropertiesManager.*;
 
 @Service
 @DefaultProperties(
         threadPoolKey = "ScoreServiceaaa", threadPoolProperties = {
         @HystrixProperty(name = CORE_SIZE, value = "1"),
-        @HystrixProperty(name = MAX_QUEUE_SIZE,value = "10")
+        @HystrixProperty(name = MAX_QUEUE_SIZE, value = "10")
 }, commandProperties = {
-        @HystrixProperty(name = EXECUTION_ISOLATION_THREAD_TIMEOUT_IN_MILLISECONDS, value = "6000")
+        @HystrixProperty(name = EXECUTION_ISOLATION_THREAD_TIMEOUT_IN_MILLISECONDS, value = "1000")
 })
 public class ScoreService {
 
@@ -30,11 +28,19 @@ public class ScoreService {
         return restTemplate.getForObject("http://localhost:8081/score/addScore", String.class);
     }
 
-    @HystrixCommand(fallbackMethod = "addScoreFallback", commandKey = "ccc")
+    //    @HystrixCommand(fallbackMethod = "addScoreFallback")
 //    @HystrixCommand
 //    @HystrixCommand(commandProperties = {
 //            @HystrixProperty(name = EXECUTION_ISOLATION_THREAD_TIMEOUT_IN_MILLISECONDS,value = "500")
 //    })
+    @HystrixCommand(fallbackMethod = "addScoreFallback",
+            commandProperties = {
+                    @HystrixProperty(name = METRICS_ROLLING_PERCENTILE_TIME_IN_MILLISECONDS, value = "5000"),
+                    @HystrixProperty(name = CIRCUIT_BREAKER_REQUEST_VOLUME_THRESHOLD, value = "3"),
+                    @HystrixProperty(name = CIRCUIT_BREAKER_ERROR_THRESHOLD_PERCENTAGE, value = "50"),
+                    @HystrixProperty(name = CIRCUIT_BREAKER_SLEEP_WINDOW_IN_MILLISECONDS, value = "3000")
+            }
+    )
     public String addScoreH() {
         return restTemplate.getForObject("http://localhost:8081/score/addScore", String.class);
     }
