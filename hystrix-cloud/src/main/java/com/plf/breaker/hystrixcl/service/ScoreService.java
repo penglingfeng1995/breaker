@@ -1,6 +1,5 @@
 package com.plf.breaker.hystrixcl.service;
 
-import com.netflix.hystrix.contrib.javanica.annotation.DefaultProperties;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,16 +8,19 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.concurrent.TimeUnit;
 
-import static com.netflix.hystrix.contrib.javanica.conf.HystrixPropertiesManager.*;
+import static com.netflix.hystrix.contrib.javanica.conf.HystrixPropertiesManager.CIRCUIT_BREAKER_ERROR_THRESHOLD_PERCENTAGE;
+import static com.netflix.hystrix.contrib.javanica.conf.HystrixPropertiesManager.CIRCUIT_BREAKER_REQUEST_VOLUME_THRESHOLD;
+import static com.netflix.hystrix.contrib.javanica.conf.HystrixPropertiesManager.CIRCUIT_BREAKER_SLEEP_WINDOW_IN_MILLISECONDS;
+import static com.netflix.hystrix.contrib.javanica.conf.HystrixPropertiesManager.METRICS_ROLLING_PERCENTILE_TIME_IN_MILLISECONDS;
 
 @Service
-@DefaultProperties(
-        threadPoolKey = "ScoreServiceaaa", threadPoolProperties = {
-        @HystrixProperty(name = CORE_SIZE, value = "1"),
-        @HystrixProperty(name = MAX_QUEUE_SIZE, value = "10")
-}, commandProperties = {
-        @HystrixProperty(name = EXECUTION_ISOLATION_THREAD_TIMEOUT_IN_MILLISECONDS, value = "1000")
-})
+//@DefaultProperties(
+//        threadPoolKey = "ScoreServiceaaa", threadPoolProperties = {
+//        @HystrixProperty(name = CORE_SIZE, value = "1"),
+//        @HystrixProperty(name = MAX_QUEUE_SIZE, value = "10")
+//}, commandProperties = {
+//        @HystrixProperty(name = EXECUTION_ISOLATION_THREAD_TIMEOUT_IN_MILLISECONDS, value = "6000")
+//})
 public class ScoreService {
 
     @Autowired
@@ -28,7 +30,7 @@ public class ScoreService {
         return restTemplate.getForObject("http://localhost:8081/score/addScore", String.class);
     }
 
-    //    @HystrixCommand(fallbackMethod = "addScoreFallback")
+    //        @HystrixCommand(fallbackMethod = "addScoreFallback")
 //    @HystrixCommand
 //    @HystrixCommand(commandProperties = {
 //            @HystrixProperty(name = EXECUTION_ISOLATION_THREAD_TIMEOUT_IN_MILLISECONDS,value = "500")
@@ -49,7 +51,7 @@ public class ScoreService {
         return "保留记录，日后发放积分";
     }
 
-    @HystrixCommand
+    @HystrixCommand(threadPoolKey = "decrScore")
     public String decrScore() {
         try {
             TimeUnit.SECONDS.sleep(5L);
